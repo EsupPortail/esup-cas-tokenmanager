@@ -50,7 +50,7 @@ Copy `cas-server-webapp-admin/src/main/webapp/` to `cas-server-webapp/src/main/w
 
   ...
   
-  <bean id="revocationController" class="org.jasig.cas.admin.revocation.RevocationController"
+  <bean id="revocationController" class="org.jasig.cas.admin.revocation.UserRevocationController"
         p:centralAuthenticationService-ref="centralAuthenticationService">
     <constructor-arg index="0" ref="ticketRegistry" />
   </bean>

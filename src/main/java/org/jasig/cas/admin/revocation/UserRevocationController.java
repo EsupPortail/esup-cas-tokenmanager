@@ -17,13 +17,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
-public class RevocationController extends AbstractController {
+public class UserRevocationController extends AbstractController {
     
     @NotNull
     private CentralAuthenticationService centralAuthenticationService;
     private TicketRegistry ticketRegistry;
 
-    public RevocationController(final TicketRegistry ticketRegistry) {
+    public UserRevocationController(final TicketRegistry ticketRegistry) {
         this.ticketRegistry = ticketRegistry;
     }
     
