@@ -21,7 +21,7 @@ Add this folder into CAS project folder, and add this line to the main `pom.xml`
 
 #### 1.3.1 Add project into main pom.xml
 
-```
+```xml
 <modules>
 	...
 	<module>cas-server-webapp-admin</module>
@@ -35,7 +35,7 @@ Copy `cas-server-webapp-admin/src/main/webapp/` to `cas-server-webapp/src/main/w
 
 #### 1.3.3 Configure cas-servlet.xml
 
-```
+```xml
   <bean
       id="handlerMappingC"
       class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
@@ -61,7 +61,7 @@ Copy `cas-server-webapp-admin/src/main/webapp/` to `cas-server-webapp/src/main/w
 
 Add this line to web.xml
 
-```
+```xml
   <servlet-mapping>
     <servlet-name>cas</servlet-name>
     <url-pattern>/tests/revocation.html</url-pattern>
@@ -81,7 +81,7 @@ revocationView.url=/WEB-INF/view/jsp/revocation.jsp
 
 Change the authenticationMetaDataPopulators tag with this one
 
-```
+```xml
     <property name="authenticationMetaDataPopulators">
         <list>
           <bean class="org.jasig.cas.authentication.principal.RememberMeAuthenticationMetaDataPopulator" />
@@ -94,7 +94,7 @@ Change the authenticationMetaDataPopulators tag with this one
 
 Change the `credentials` bean with this one
 
-```
+```xml
 <var name="credentials" class="org.jasig.cas.authentication.principal.ExtrasInfosRememberMeUsernamePasswordCredentials" />
 ```
 
@@ -109,7 +109,7 @@ Add the `cas-server-webapp-admin` maven dependency to the restlet `pom.xml`
 You will have to change the credentials type in `cas-server-integration-restlet/src/main/java/org/jasig/cas/integration/restlet/TicketResource.java`
 Change the first line of the `obtainCredentials()` method with this one
 
-```
+```java
 final ExtrasInfosRememberMeUsernamePasswordCredentials c = new ExtrasInfosRememberMeUsernamePasswordCredentials();
 ```
 
