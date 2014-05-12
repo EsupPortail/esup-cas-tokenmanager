@@ -82,11 +82,12 @@ revocationView.url=/WEB-INF/view/jsp/revocation.jsp
 Change the authenticationMetaDataPopulators tag with this one
 
 ```
-	<property name="authenticationMetaDataPopulators">
-	    <list>
-        	<bean class="org.jasig.cas.authentication.principal.ExtrasInfosAuthenticationMetaDataPopulator" />
-      	</list>
-	</property>
+    <property name="authenticationMetaDataPopulators">
+        <list>
+          <bean class="org.jasig.cas.authentication.principal.RememberMeAuthenticationMetaDataPopulator" />
+            <bean class="org.jasig.cas.authentication.principal.ExtrasInfosAuthenticationMetaDataPopulator" />
+          </list>
+    </property>
 ```
 
 #### 1.3.7 Configure login-webflow.xml

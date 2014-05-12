@@ -40,9 +40,5 @@ public interface ExtrasInfosCredentials extends Credentials {
 	void setUserAgent(String userAgent);
 
 	void setIpAddress(String ipAddress);
-
-        void setRememberMe(boolean rememberMe);
-        
-        boolean isRememberMe();
         
 }

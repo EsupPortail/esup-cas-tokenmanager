@@ -43,10 +43,6 @@ public final class ExtrasInfosAuthenticationMetaDataPopulator implements
 
             attributes.put(ExtrasInfosCredentials.AUTHENTICATION_ATTRIBUTE_USER_AGENT, r.getUserAgent());
             attributes.put(ExtrasInfosCredentials.AUTHENTICATION_ATTRIBUTE_IP_ADDRESS, r.getIpAddress());
-
-            if (r.isRememberMe()) {
-                attributes.put(RememberMeCredentials.AUTHENTICATION_ATTRIBUTE_REMEMBER_ME, Boolean.TRUE);
-            }
         }
         
         return authentication;
