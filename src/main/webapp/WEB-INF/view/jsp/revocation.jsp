@@ -25,7 +25,6 @@
 	<section class="container">
 		
 		<c:if test="${not empty destroyTicketMessage}">
-
 			<p class="alert alert-success alert-dismissable">
 			  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 			  ${destroyTicketMessage}
@@ -34,55 +33,52 @@
 
 		<c:if test="${not empty userTickets}">
 		<table style="margin: 20px auto" class="table table-responsive"> 
+			<thead>
+				<tr class="active">
+					<th>Username</th>
+					<th>Creation time</th>
+					<th>Last time used</th>
+					<th>User Agent</th>
+					<th>IP Address</th>
+					<th>Actions</th>
+				</tr>				
+			</thead>
 			<tbody>
-				<c:forEach items="${userTickets}" var="userTicket">
-					<tr class="active">
-						<th>Username</th>
-						<th>Creation time</th>
-						<th>Last time used</th>
-						<th>User Agent</th>
-						<th>IP Address</th>
-						<th>Actions</th>
-					</tr>
-					<c:forEach items="${userTicket.value}" var="authTicket" varStatus="status">
-					<tr>
+				<c:forEach items="${userTickets}" var="auth" varStatus="status">
+				<tr>
+					<c:set var="authentication" value="${auth.key}"/>
+					<c:set var="ticket" value="${auth.value}"/>
 
-						<c:set var="authentication" value="${authTicket.key}"/>
-						<c:set var="ticket" value="${authTicket.value}"/>
+					<c:if test="${status.index lt 1}">
+						<td rowspan="${fn:length(userTickets)}">
+							${authenticatedUser}
+						</td>
+					</c:if>
 
-						<c:if test="${status.index lt 1}">
-							<td rowspan="${fn:length(userTicket.value)}">
-								${userTicket.key}
-							</td>
-						</c:if>
-
-						<td>
-							<jsp:useBean id="creationTime" class="java.util.Date" />
-							<jsp:setProperty name="creationTime" property="time" value="${ticket.creationTime}" />
-							<fmt:formatDate value="${creationTime}" type="both" />
-						</td>
-						<td>                
-	                        <cas:timeConverter time="${ticket.lastTimeUsed}"/>                    					
-						</td>
-						<td>
-							<cas:uaDetector userAgent="${authentication.attributes.userAgent}"/>
-						</td>
-						<td>
-							<cas:ipLocator ipAddress="${authentication.attributes.ipAddress}"/>
-						</td>
-						<td>
-							<a href="./revocation.html?ticket=${ticket.id}" class="btn btn-danger">
-                            	Révoquer
-	                        </a>
-						</td>
-
-					</tr>
-					</c:forEach>
-				</c:forEach>		
+					<td>
+						<jsp:useBean id="creationTime" class="java.util.Date" />
+						<jsp:setProperty name="creationTime" property="time" value="${ticket.creationTime}" />
+						<fmt:formatDate value="${creationTime}" type="both" />
+					</td>
+					<td>                
+                        <cas:timeConverter time="${ticket.lastTimeUsed}"/>                    					
+					</td>
+					<td>
+						<cas:uaDetector userAgent="${authentication.attributes.userAgent}"/>
+					</td>
+					<td>
+						<cas:ipLocator ipAddress="${authentication.attributes.ipAddress}"/>
+					</td>
+					<td>
+						<a href="./revocation.html?ticket=${ticket.id}" class="btn btn-danger">
+                        	Révoquer
+                        </a>
+					</td>
+				</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 		</c:if>
-
 
 	</section>
 	

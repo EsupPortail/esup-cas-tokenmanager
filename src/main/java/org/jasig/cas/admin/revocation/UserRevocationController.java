@@ -1,9 +1,7 @@
 package org.jasig.cas.admin.revocation;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +11,7 @@ import org.jasig.cas.authentication.Authentication;
 import org.jasig.cas.ticket.Ticket;
 import org.jasig.cas.ticket.TicketGrantingTicket;
 import org.jasig.cas.ticket.registry.TicketRegistry;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
@@ -30,6 +29,8 @@ public class UserRevocationController extends AbstractController {
     @Override
     protected ModelAndView handleRequestInternal(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 
+        String authenticatedUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        
         ModelMap model = new ModelMap();
         
         /**
@@ -42,20 +43,17 @@ public class UserRevocationController extends AbstractController {
             model.put("destroyTicketMessage", "Ticket : " + ticketParam + " successfully destroyed from the ticket registry");
         }
         
-        /**
-         * TODO : 
-         * Implements ACL and return ticket only for the authenticated user
-         */
-        Map<String, HashMap<Authentication, Ticket>> userTickets = this.listTicketForUser("not used for the moment");
+        Map<Authentication, Ticket> userTickets = this.listTicketForUser(authenticatedUser);
 
         model.put("userTickets", userTickets);
+        model.put("authenticatedUser", authenticatedUser);
   
         return new ModelAndView("revocationView", model);
     }
 
-    private Map<String, HashMap<Authentication, Ticket>> listTicketForUser(String userId) {
+    private Map<Authentication, Ticket> listTicketForUser(String userId) {
         
-        Map<String, HashMap<Authentication, Ticket>> userTickets = new HashMap<String, HashMap<Authentication, Ticket>>();
+        Map<Authentication, Ticket> userTickets = new HashMap<Authentication, Ticket>();
         
         try {
 
@@ -69,17 +67,12 @@ public class UserRevocationController extends AbstractController {
 
                     // Cast Ticket to TicketGrantingTicket to access specific tgt methods
                     TicketGrantingTicket tgt = (TicketGrantingTicket) ticket;
-                    String username = tgt.getAuthentication().getPrincipal().getId();
+                    String ticketOwner = tgt.getAuthentication().getPrincipal().getId();
                     
-//                    Checking if user already have a ticket list
-//                    otherwise create one, and add the associated TGT
-                    if(userTickets.containsKey(username)) {
-                        userTickets.get(username).put(tgt.getAuthentication(), ticket);
-                    } else {
-                        HashMap authTickets = new HashMap<Authentication, Ticket>();
-                        authTickets.put(tgt.getAuthentication(), ticket);
-                        userTickets.put(username, authTickets);
-                    }   
+                    if(ticketOwner.equalsIgnoreCase(userId)) {
+                        userTickets.put(tgt.getAuthentication(), ticket);
+                    }
+                     
                 }    
             }
             
