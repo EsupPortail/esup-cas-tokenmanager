@@ -29,6 +29,18 @@ Add this folder into CAS project folder, and add this line to the main `pom.xml`
 </modules>
 ```
 
+#### 1.3.2 Configure cas.properties
+
+Open `cas-server-webapp/src/main/webapp/WEB-INF/cas.properties` and add 
+
+```
+# 7 200 seconds => 2 hours
+tgt.timeToKillInSeconds=7200
+# 604 800 seconds => 1 week
+# 7 257 600 seconds => 3 months
+tgt.rememberMeTimeToKillInSeconds=604800
+```
+
 #### 1.3.2 Copy static files
 
 Copy `cas-server-webapp-admin/src/main/webapp/` to `cas-server-webapp/src/main/webapp/`
@@ -52,6 +64,8 @@ Copy `cas-server-webapp-admin/src/main/webapp/` to `cas-server-webapp/src/main/w
   
   <bean id="revocationController" class="org.jasig.cas.admin.revocation.UserRevocationController"
         p:centralAuthenticationService-ref="centralAuthenticationService">
+        p:expirationPolicyInSeconds="${tgt.rememberMeTimeToKillInSeconds}"
+        p:rememberMeExpirationPolicyInSeconds="${tgt.rememberMeTimeToKillInSeconds}">
     <constructor-arg index="0" ref="ticketRegistry" />
   </bean>
 
