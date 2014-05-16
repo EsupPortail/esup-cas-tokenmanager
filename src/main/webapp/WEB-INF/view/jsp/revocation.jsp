@@ -37,9 +37,10 @@
 				<tr class="active">
 					<th>Username</th>
 					<th>Creation time</th>
+					<th>Expiration Date</th>
 					<th>Last time used</th>
-					<th>User Agent</th>
-					<th>IP Address</th>
+					<th>Browser / Device</th>
+					<th>Spot</th>
 					<th>Actions</th>
 				</tr>				
 			</thead>
@@ -59,6 +60,35 @@
 						<jsp:useBean id="creationTime" class="java.util.Date" />
 						<jsp:setProperty name="creationTime" property="time" value="${ticket.creationTime}" />
 						<fmt:formatDate value="${creationTime}" type="both" />
+					</td>
+					<td>
+
+						<c:choose>
+							<c:when test="${authentication.attributes['org.jasig.cas.authentication.principal.REMEMBER_ME'] == true}">
+								
+								<fmt:parseNumber var="expirationPolicy" 
+												 integerOnly="true" 
+												 type="number" 
+												 value="${rememberMeExpirationPolicyInSeconds}" />
+							</c:when>
+							<c:when test="${authentication.attributes['org.jasig.cas.authentication.principal.REMEMBER_ME'] == false}">
+								
+								<fmt:parseNumber var="expirationPolicy" 
+												 integerOnly="true" 
+												 type="number" 
+												 value="${expirationPolicyInSeconds}" />
+							</c:when>
+							<c:otherwise>
+								
+								<fmt:parseNumber var="expirationPolicy" 
+												 integerOnly="true" 
+												 type="number" 
+												 value="${expirationPolicyInSeconds}" />
+							</c:otherwise>
+						</c:choose>
+
+						<cas:expirationDate creationDate="${creationTime}" expirationPolicy="${expirationPolicy}" var="expirationDate"/>
+						<fmt:formatDate value="${expirationDate}" type="date"/>
 					</td>
 					<td>                
                         <cas:timeConverter time="${ticket.lastTimeUsed}"/>                    					
@@ -85,7 +115,6 @@
 	<footer class="container">
 		
 		<hr>
-
 		<p>Cas webapp admin - Université de La Rochelle</p>
 
 	</footer>

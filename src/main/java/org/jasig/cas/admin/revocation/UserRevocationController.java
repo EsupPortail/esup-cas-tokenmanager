@@ -1,6 +1,7 @@
 package org.jasig.cas.admin.revocation;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,8 @@ public class UserRevocationController extends AbstractController {
     @NotNull
     private CentralAuthenticationService centralAuthenticationService;
     private TicketRegistry ticketRegistry;
+    private int expirationPolicyInSeconds;
+    private int rememberMeExpirationPolicyInSeconds;
 
     public UserRevocationController(final TicketRegistry ticketRegistry) {
         this.ticketRegistry = ticketRegistry;
@@ -44,7 +47,9 @@ public class UserRevocationController extends AbstractController {
         }
         
         Map<Authentication, Ticket> userTickets = this.listTicketForUser(authenticatedUser);
-
+        
+        model.put("expirationPolicyInSeconds", this.expirationPolicyInSeconds);
+        model.put("rememberMeExpirationPolicyInSeconds", this.rememberMeExpirationPolicyInSeconds);
         model.put("userTickets", userTickets);
         model.put("authenticatedUser", authenticatedUser);
   
@@ -86,6 +91,14 @@ public class UserRevocationController extends AbstractController {
     public void setCentralAuthenticationService(
         final CentralAuthenticationService centralAuthenticationService) {
         this.centralAuthenticationService = centralAuthenticationService;
-    }    
+    }
+    
+    public void setExpirationPolicyInSeconds(final int expirationPolicyInSeconds) {
+        this.expirationPolicyInSeconds = expirationPolicyInSeconds;
+    }
+    
+    public void setRememberMeExpirationPolicyInSeconds(final int rememberMeExpirationPolicyInSeconds) {
+        this.rememberMeExpirationPolicyInSeconds = rememberMeExpirationPolicyInSeconds;
+    }
     
 }

@@ -33,5 +33,19 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
+	<tag>
+		<name>expirationDate</name>
+		<tagclass>org.jasig.cas.jstl.ExpirationDateTag</tagclass>
+		<attribute>
+			<name>creationDate</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>expirationPolicy</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
 
 </taglib>
