@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jasig.cas.authentication.principal;
+package org.jasig.cas.authentication;
 
 /**
  * Credentials that wish to store extras infos for users
@@ -26,19 +26,32 @@ package org.jasig.cas.authentication.principal;
  *
  *
  */
+public class ExtrasInfosRememberMeUsernamePasswordCredential extends RememberMeUsernamePasswordCredential implements ExtrasInfosCredential {
 
-public interface ExtrasInfosCredentials extends Credentials {
+    private String userAgent;
+
+    private String ipAddress;
+
+    private static final long serialVersionUID = 6594051428434005804L;
     
-	String AUTHENTICATION_ATTRIBUTE_USER_AGENT = "userAgent";
+    @Override
+    public String getUserAgent() {
+        return this.userAgent;
+    }
 
-	String AUTHENTICATION_ATTRIBUTE_IP_ADDRESS = "ipAddress";
+    @Override
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }    
+    
+    @Override
+    public String getIpAddress() {
+        return this.ipAddress;
+    }
 
-	String getUserAgent();
-
-	String getIpAddress();
-
-	void setUserAgent(String userAgent);
-
-	void setIpAddress(String ipAddress);
-        
+    @Override
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+    
 }

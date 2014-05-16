@@ -18,9 +18,11 @@
  */
 package org.jasig.cas.authentication.principal;
 
+import org.jasig.cas.authentication.ExtrasInfosCredential;
 import java.util.Map;
-import org.jasig.cas.authentication.Authentication;
+import org.jasig.cas.authentication.AuthenticationBuilder;
 import org.jasig.cas.authentication.AuthenticationMetaDataPopulator;
+import org.jasig.cas.authentication.Credential;
 
 /**
  * Determines if the credentials provided are for Remember Me Services and then sets the appropriate
@@ -34,17 +36,16 @@ import org.jasig.cas.authentication.AuthenticationMetaDataPopulator;
 public final class ExtrasInfosAuthenticationMetaDataPopulator implements
     AuthenticationMetaDataPopulator {
 
-    public Authentication populateAttributes(final Authentication authentication,
-        final Credentials credentials) {
-        if (credentials instanceof ExtrasInfosCredentials) {
-            final ExtrasInfosCredentials r = (ExtrasInfosCredentials) credentials;
 
-            Map<String, Object> attributes = authentication.getAttributes();
+    @Override
+    public void populateAttributes(AuthenticationBuilder builder, Credential credential) {
+        if (credential instanceof ExtrasInfosCredential) {
+            final ExtrasInfosCredential r = (ExtrasInfosCredential) credential;
 
-            attributes.put(ExtrasInfosCredentials.AUTHENTICATION_ATTRIBUTE_USER_AGENT, r.getUserAgent());
-            attributes.put(ExtrasInfosCredentials.AUTHENTICATION_ATTRIBUTE_IP_ADDRESS, r.getIpAddress());
+            Map<String, Object> attributes = builder.getAttributes();
+
+            attributes.put(ExtrasInfosCredential.AUTHENTICATION_ATTRIBUTE_USER_AGENT, r.getUserAgent());
+            attributes.put(ExtrasInfosCredential.AUTHENTICATION_ATTRIBUTE_IP_ADDRESS, r.getIpAddress());
         }
-        
-        return authentication;
     }
 }

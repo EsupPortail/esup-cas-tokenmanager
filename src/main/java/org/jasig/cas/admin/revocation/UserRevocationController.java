@@ -1,7 +1,6 @@
 package org.jasig.cas.admin.revocation;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,6 @@ import org.jasig.cas.authentication.Authentication;
 import org.jasig.cas.ticket.Ticket;
 import org.jasig.cas.ticket.TicketGrantingTicket;
 import org.jasig.cas.ticket.registry.TicketRegistry;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
@@ -31,8 +29,8 @@ public class UserRevocationController extends AbstractController {
     
     @Override
     protected ModelAndView handleRequestInternal(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-
-        String authenticatedUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        
+        String authenticatedUser = "admin";
         
         ModelMap model = new ModelMap();
         

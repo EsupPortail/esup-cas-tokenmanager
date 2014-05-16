@@ -1,19 +1,15 @@
 # cas-token-manager
 
 This project is a CAS addon to manage user's Ticket Granting Ticket
+The plugin aim to be compatible with CAS _4.0.0+_
 
-Warning : This is only a proof of concept, do not use in a production environment
-
+_Warning : This is only a proof of concept, do not use in a production environment_
 
 ## 1. Configuration
 
 ### 1.1 Enable Remember Me Authentication
 
-[Activate CAS Remember Me](https://wiki.jasig.org/display/CASUM/Remember+Me)
-
-### 1.2 Enable CAS REST API
-
-[Activate CAS REST API](https://wiki.jasig.org/display/casum/restful+api)
+[Activate CAS Remember Me](https://jasig.github.io/cas/4.0.0/installation/Configuring-Authentication-Components.html#long-term-authentication)
 
 Add this folder into CAS project folder, and add this line to the main `pom.xml`
 
@@ -24,7 +20,7 @@ Add this folder into CAS project folder, and add this line to the main `pom.xml`
 ```xml
 <modules>
 	...
-	<module>cas-server-webapp-admin</module>
+	<module>cas-addon-webapp-token-manager</module>
 	...
 </modules>
 ```
@@ -41,11 +37,11 @@ tgt.timeToKillInSeconds=7200
 tgt.rememberMeTimeToKillInSeconds=604800
 ```
 
-#### 1.3.2 Copy static files
+#### 1.3.3 Copy static files
 
-Copy `cas-server-webapp-admin/src/main/webapp/` to `cas-server-webapp/src/main/webapp/`
+Copy `cas-addon-webapp-token-manager/src/main/webapp/` to `cas-server-webapp/src/main/webapp/`
 
-#### 1.3.3 Configure cas-servlet.xml
+#### 1.3.4 Configure cas-servlet.xml
 
 ```xml
   <bean
@@ -54,7 +50,7 @@ Copy `cas-server-webapp-admin/src/main/webapp/` to `cas-server-webapp/src/main/w
     <property name="mappings">
       <props>
         ...
-        <prop key="/tests/revocation.html">revocationController</prop>
+        <prop key="/tokenManager">revocationController</prop>
       </props>
     </property>
     ...
@@ -63,7 +59,7 @@ Copy `cas-server-webapp-admin/src/main/webapp/` to `cas-server-webapp/src/main/w
   ...
   
   <bean id="revocationController" class="org.jasig.cas.admin.revocation.UserRevocationController"
-        p:centralAuthenticationService-ref="centralAuthenticationService">
+        p:centralAuthenticationService-ref="centralAuthenticationService"
         p:expirationPolicyInSeconds="${tgt.rememberMeTimeToKillInSeconds}"
         p:rememberMeExpirationPolicyInSeconds="${tgt.rememberMeTimeToKillInSeconds}">
     <constructor-arg index="0" ref="ticketRegistry" />
@@ -71,18 +67,27 @@ Copy `cas-server-webapp-admin/src/main/webapp/` to `cas-server-webapp/src/main/w
 
 ```
 
-#### 1.3.4 Configure web.xml
+#### 1.3.5 Configure web.xml
 
 Add this line to web.xml
 
 ```xml
   <servlet-mapping>
     <servlet-name>cas</servlet-name>
-    <url-pattern>/tests/revocation.html</url-pattern>
+    <url-pattern>/tokenManager</url-pattern>
   </servlet-mapping>
+
+  ...
+
+  <jsp-config>
+    <taglib>
+      <taglib-uri>/cas.tld</taglib-uri>
+      <taglib-location>/WEB-INF/jstl/cas.tld</taglib-location>
+    </taglib>
+  </jsp-config>
 ```
 
-#### 1.3.5 Configure classes/default_views.properties
+#### 1.3.6 Configure classes/default_views.properties
 
 Add this line to map revocationController key (of cas-servlet.xml file) to the jsp file
 
@@ -91,40 +96,39 @@ revocationView.(class)=org.springframework.web.servlet.view.JstlView
 revocationView.url=/WEB-INF/view/jsp/revocation.jsp
 ```
 
-#### 1.3.6 Configure deployerConfigContext.xml
+#### 1.3.7 Configure deployerConfigContext.xml
 
 Change the authenticationMetaDataPopulators tag with this one
 
 ```xml
     <property name="authenticationMetaDataPopulators">
         <list>
-          <bean class="org.jasig.cas.authentication.principal.RememberMeAuthenticationMetaDataPopulator" />
+            <bean class="org.jasig.cas.authentication.SuccessfulHandlerMetaDataPopulator" />
+            <bean class="org.jasig.cas.authentication.principal.RememberMeAuthenticationMetaDataPopulator" />
             <bean class="org.jasig.cas.authentication.principal.ExtrasInfosAuthenticationMetaDataPopulator" />
           </list>
     </property>
 ```
 
-#### 1.3.7 Configure login-webflow.xml
+#### 1.3.8 Configure login-webflow.xml
 
 Change the `credentials` bean with this one
 
 ```xml
-<var name="credentials" class="org.jasig.cas.authentication.principal.ExtrasInfosRememberMeUsernamePasswordCredentials" />
+<var name="credentials" class="org.jasig.cas.authentication.principal.ExtrasInfosRememberMeUsernamePasswordCredential" />
 ```
 
-#### 1.3.8 Configure spring-configuration/securityContext.xml
+#### 1.3.9 Configure spring-configuration/securityContext.xml
 
 Todo : not implemented yet
 
-### 1.4 Modify CAS API REST
+#### 1.3.10 update casLoginView.jsp
 
-Add the `cas-server-webapp-admin` maven dependency to the restlet `pom.xml`
+update `cas-server-webapp/src/main/webapp/WEB-INF/view/jsp/default/ui/casLoginView.jsp` and add the following in the login form.
 
-You will have to change the credentials type in `cas-server-integration-restlet/src/main/java/org/jasig/cas/integration/restlet/TicketResource.java`
-Change the first line of the `obtainCredentials()` method with this one
-
-```java
-final ExtrasInfosRememberMeUsernamePasswordCredentials c = new ExtrasInfosRememberMeUsernamePasswordCredentials();
+```jsp
+    <input type="hidden" name="userAgent" value="${header['User-Agent']}"/>
+    <input type="hidden" name="ipAddress" value="<%=request.getRemoteAddr()%>"/>
 ```
 
 ## 2. Deployment
