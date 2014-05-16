@@ -21,13 +21,13 @@
   <parent>
     <groupId>org.jasig.cas</groupId>
     <artifactId>cas-server</artifactId>
-    <version>3.5.2.2-SNAPSHOT</version>
+    <version>4.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jasig.cas</groupId>
-  <artifactId>cas-server-webapp-admin</artifactId>
+  <artifactId>cas-addon-webapp-token-manager</artifactId>
   <packaging>jar</packaging>
-  <name>Jasig CAS TGT revocation interface</name>
+  <name>Jasig CAS Addon : Token Manager</name>
   <dependencies>
     <dependency>
       <groupId>org.jasig.cas</groupId>
