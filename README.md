@@ -60,7 +60,7 @@ Copy `cas-addon-webapp-token-manager/src/main/webapp/` to `cas-server-webapp/src
   
   <bean id="revocationController" class="org.jasig.cas.admin.revocation.UserRevocationController"
         p:centralAuthenticationService-ref="centralAuthenticationService"
-        p:expirationPolicyInSeconds="${tgt.rememberMeTimeToKillInSeconds}"
+        p:expirationPolicyInSeconds="${tgt.timeToKillInSeconds}"
         p:rememberMeExpirationPolicyInSeconds="${tgt.rememberMeTimeToKillInSeconds}">
     <constructor-arg index="0" ref="ticketRegistry" />
   </bean>
