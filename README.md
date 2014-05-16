@@ -112,10 +112,22 @@ Change the authenticationMetaDataPopulators tag with this one
 
 #### 1.3.8 Configure login-webflow.xml
 
-Change the `credentials` bean with this one
+Change the `credentials` bean with this one, and update the binding for the viewLoginForm's view-state
 
 ```xml
 <var name="credentials" class="org.jasig.cas.authentication.principal.ExtrasInfosRememberMeUsernamePasswordCredential" />
+
+<view-state id="viewLoginForm" view="casLoginView" model="credential">
+  <binder>
+      <binding property="username" />
+      <binding property="password" />
+      <binding property="rememberMe" />
+      <binding property="userAgent" />
+      <binding property="ipAddress" />
+  </binder>
+  ...
+</view-state>
+
 ```
 
 #### 1.3.9 Configure spring-configuration/securityContext.xml

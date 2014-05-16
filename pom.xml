@@ -53,14 +53,14 @@
       <type>jar</type>
     </dependency>
     <dependency>
-        <groupId>org.json</groupId>
-        <artifactId>json</artifactId>
-        <version>20090211</version>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20090211</version>
     </dependency>
     <dependency>
-            <groupId>net.sf.uadetector</groupId>
-            <artifactId>uadetector-resources</artifactId>
-            <version>2014.01</version>
+      <groupId>net.sf.uadetector</groupId>
+      <artifactId>uadetector-resources</artifactId>
+      <version>2014.04</version>
     </dependency>
   </dependencies>
 </project>
