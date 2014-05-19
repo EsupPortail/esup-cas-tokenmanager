@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jasig.cas.authentication.principal;
+package org.esupportail.cas.addon.authentication.principal;
 
-import org.jasig.cas.authentication.ExtrasInfosCredential;
+import org.esupportail.cas.addon.authentication.ExtrasInfosCredential;
 import java.util.Map;
 import org.jasig.cas.authentication.AuthenticationBuilder;
 import org.jasig.cas.authentication.AuthenticationMetaDataPopulator;

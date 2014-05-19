@@ -8,7 +8,7 @@
 	<shortname>cas</shortname>
 	<tag>
 		<name>timeConverter</name>
-		<tagclass>org.jasig.cas.jstl.TimeConverterTag</tagclass>
+		<tagclass>org.esupportail.cas.addon.jstl.TimeConverterTag</tagclass>
 		<attribute>
 			<name>time</name>
 			<required>true</required>
@@ -17,7 +17,7 @@
 	</tag>
 	<tag>
 		<name>ipLocator</name>
-		<tagclass>org.jasig.cas.jstl.IPLocatorTag</tagclass>
+		<tagclass>org.esupportail.cas.addon.jstl.IPLocatorTag</tagclass>
 		<attribute>
 			<name>ipAddress</name>
 			<required>true</required>
@@ -26,7 +26,7 @@
 	</tag>
 	<tag>
 		<name>uaDetector</name>
-		<tagclass>org.jasig.cas.jstl.UADetectorTag</tagclass>
+		<tagclass>org.esupportail.cas.addon.jstl.UADetectorTag</tagclass>
 		<attribute>
 			<name>userAgent</name>
 			<required>true</required>
@@ -35,7 +35,7 @@
 	</tag>
 	<tag>
 		<name>expirationDate</name>
-		<tagclass>org.jasig.cas.jstl.ExpirationDateTag</tagclass>
+		<tagclass>org.esupportail.cas.addon.jstl.ExpirationDateTag</tagclass>
 		<attribute>
 			<name>creationDate</name>
 			<required>true</required>

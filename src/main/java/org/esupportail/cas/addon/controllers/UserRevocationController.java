@@ -1,4 +1,4 @@
-package org.jasig.cas.admin.revocation;
+package org.esupportail.cas.addon.controllers;
 
 import java.util.Collection;
 import java.util.HashMap;

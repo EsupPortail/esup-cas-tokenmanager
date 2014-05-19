@@ -58,7 +58,7 @@ Copy `cas-addon-webapp-token-manager/src/main/webapp/` to `cas-server-webapp/src
 
   ...
   
-  <bean id="revocationController" class="org.jasig.cas.admin.revocation.UserRevocationController"
+  <bean id="revocationController" class="org.esupportail.cas.addon.admin.revocation.UserRevocationController"
         p:centralAuthenticationService-ref="centralAuthenticationService"
         p:expirationPolicyInSeconds="${tgt.timeToKillInSeconds}"
         p:rememberMeExpirationPolicyInSeconds="${tgt.rememberMeTimeToKillInSeconds}">
@@ -105,7 +105,7 @@ Change the authenticationMetaDataPopulators tag with this one
         <list>
             <bean class="org.jasig.cas.authentication.SuccessfulHandlerMetaDataPopulator" />
             <bean class="org.jasig.cas.authentication.principal.RememberMeAuthenticationMetaDataPopulator" />
-            <bean class="org.jasig.cas.authentication.principal.ExtrasInfosAuthenticationMetaDataPopulator" />
+            <bean class="org.esupportail.cas.addon.authentication.principal.ExtrasInfosAuthenticationMetaDataPopulator" />
           </list>
     </property>
 ```
@@ -115,7 +115,7 @@ Change the authenticationMetaDataPopulators tag with this one
 Change the `credentials` bean with this one, and update the binding for the viewLoginForm's view-state
 
 ```xml
-<var name="credentials" class="org.jasig.cas.authentication.principal.ExtrasInfosRememberMeUsernamePasswordCredential" />
+<var name="credentials" class="org.esupportail.cas.addon.authentication.principal.ExtrasInfosRememberMeUsernamePasswordCredential" />
 
 <view-state id="viewLoginForm" view="casLoginView" model="credential">
   <binder>
