@@ -82,4 +82,24 @@
 		</xmltask>	
 	</target>
 
+	<target name="ticket-expiration-update" description="Update the ticketExpirationPolicies.xml file">
+		<echo message="Update ticketExpirationPolicies.xml"/>
+		<xmltask 
+			source="${cas.server.webapp.dir}/WEB-INF/spring-configuration/ticketExpirationPolicies.xml"
+			dest="${cas.server.webapp.dir}/WEB-INF/spring-configuration/ticketExpirationPolicies.xml">
+			<replace 
+				path='//:bean[@id="longTermSessionTGTExpirationPolicy"]/@c:timeToKillInMilliSeconds'
+				withText="${longTermSessionAttrValue}"/>
+		</xmltask>
+
+		<echo message="Update ticketGrantingTicketGenerator.xml"/>
+		<xmltask 
+			source="${cas.server.webapp.dir}/WEB-INF/spring-configuration/ticketGrantingTicketGenerator.xml"
+			dest="${cas.server.webapp.dir}/WEB-INF/spring-configuration/ticketGrantingTicketGenerator.xml">
+			<replace 
+				path='//:bean[@id="ticketGrantingTicketCookieGenerator"]/@c:timeToKillInMilliSeconds'
+				withText="${tgtTicketCookieGeneratorAttrValue}"/>
+		</xmltask>
+	</target>
+
 </project>
