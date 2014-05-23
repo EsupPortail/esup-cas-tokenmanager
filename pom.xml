@@ -25,8 +25,8 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jasig.cas</groupId>
-  <artifactId>cas-addon-webapp-token-manager</artifactId>
-  <packaging>jar</packaging>
+  <artifactId>cas-addon-token-manager-webapp</artifactId>
+  <packaging>war</packaging>
   <name>Jasig CAS Addon : Token Manager</name>
   <dependencies>
     <dependency>
@@ -62,5 +62,32 @@
       <artifactId>uadetector-resources</artifactId>
       <version>2014.01</version>
     </dependency>
+    <dependency>
+      <groupId>org.jasig.cas</groupId>
+      <artifactId>cas-server-webapp</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+      <scope>runtime</scope>
+    </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <overlays>
+            <overlay>
+              <groupId>org.jasig.cas</groupId>
+              <artifactId>cas-server-webapp</artifactId>
+              <excludes>
+                <exclude>WEB-INF/cas-servlet-fragment.xml</exclude>
+              </excludes>
+            </overlay>
+          </overlays>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
