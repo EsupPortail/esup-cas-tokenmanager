@@ -1,0 +1,85 @@
+<project name="cas-addon-token-manager-webapp" basedir="." default="help">
+
+	<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask">
+		<classpath path="lib/xmltask.jar"/>
+	</taskdef>
+	<property file="${basedir}/build.properties" />
+
+	<target name="build" description="Starts the building process to automate the addon installation">
+		
+		 <input
+		    message="Configuration file will be overwritten, please make sure to do a backup before executing this task. Continue :"
+		    validargs="y,n"
+		    addproperty="do.continue"
+		  />
+		  <fail message="Build aborted by user.">
+  			  <condition>
+			    <equals arg1="n" arg2="${do.continue}"/>
+			  </condition>
+		  </fail>
+
+		<fail message="The build process seems to be already done">
+		    <condition>
+		        <resourcecontains 
+		        	resource="${cas.server.webapp.dir}/../resources/default_views.properties" 
+		        	substring="${viewPropertyUrlValue}" />
+		    </condition>
+		</fail>
+
+		<antcall target="properties-update" />
+		<antcall target="web-update" />
+		<antcall target="cas-servlet-update" />
+		<antcall target="cas-login-webflow-update" />
+		<antcall target="cas-deployer-config-update" />
+
+	</target>
+
+	<target name="properties-update" description="Update the .properties files">
+		
+		<echo message="Update cas.properties"/>
+
+		<concat destfile="${cas.server.webapp.dir}/WEB-INF/cas.properties" append="true">
+			${tgt.timeToKillInSeconds}
+			${tgt.rememberMeTimeToKillInSeconds}
+		</concat>
+
+		<echo message="Update default_views.properties"/>
+		
+		<concat destfile="${cas.server.webapp.dir}/../resources/default_views.properties" append="true">
+			${viewPropertyClassKey}=${viewPropertyClassValue}
+			${viewPropertyUrlKey}=${viewPropertyUrlValue}
+		</concat>
+
+	</target>
+	
+	<target name="web-update" description="Update the web.xml file">
+		<echo message="Update web.xml"/>
+		<xmltask source="${cas.server.webapp.dir}/WEB-INF/web.xml" dest="${cas.server.webapp.dir}/WEB-INF/web.xml">
+			<insert path="//:web-app/:welcome-file-list" file="${basedir}/src/main/webapp/WEB-INF/web-fragment.xml" position="after" />
+		</xmltask>
+	</target>
+
+	<target name="cas-servlet-update" description="Update the cas-servlet.xml file">
+		<echo message="Update cas-servlet.xml"/>
+		<xmltask source="${cas.server.webapp.dir}/WEB-INF/cas-servlet.xml" dest="${cas.server.webapp.dir}/WEB-INF/cas-servlet.xml">
+			<insert path="/:beans/:bean[last()]" file="${basedir}/src/main/webapp/WEB-INF/cas-servlet-fragment.xml" position="after" />
+			<insert path='//:bean[@id="handlerMappingC"]//:prop[last()]' xml="${cas.servlet.prop.xml}" position="after" />
+		</xmltask>
+	</target>
+
+	<target name="cas-login-webflow-update" description="Update the login-webflow.xml file">
+		<echo message="Update login-webflow.xml"/>
+		<xmltask source="${cas.server.webapp.dir}/WEB-INF/login-webflow.xml" dest="${cas.server.webapp.dir}/WEB-INF/login-webflow.xml">
+			<insert path="//property[name='authenticationMetaDataPopulators']" position="after" xml="${cas.deployer.config.metadatapopulator.xml}"/>
+		</xmltask>
+	</target>
+
+	<target name="cas-deployer-config-update" description="Update the deployerConfigContext.xml file">
+		<echo message="Update deployerConfigContext.xml"/>
+		<xmltask source="${cas.server.webapp.dir}/WEB-INF/deployerConfigContext.xml" dest="${cas.server.webapp.dir}/WEB-INF/deployerConfigContext.xml">		
+			<replace path='//:var[@name="credential"]/@class' withText="${cas.login.webflow.credential.xml}" />
+			<insert path="//:view-state[@id='viewLoginForm']//:binding[last()]" position="after" xml="${cas.login.webflow.bindings.xml}" />
+		</xmltask>	
+	</target>
+
+</project>

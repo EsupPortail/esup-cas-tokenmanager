@@ -1,0 +1,7 @@
+<!-- Added by build process -->
+<bean xmlns:p="http://www.springframework.org/schema/p" id="revocationController" class="org.esupportail.cas.addon.admin.revocation.UserRevocationController"
+    p:centralAuthenticationService-ref="centralAuthenticationService"
+    p:expirationPolicyInSeconds="${tgt.timeToKillInSeconds}"
+    p:rememberMeExpirationPolicyInSeconds="${tgt.rememberMeTimeToKillInSeconds}">
+<constructor-arg index="0" ref="ticketRegistry" />
+</bean>
