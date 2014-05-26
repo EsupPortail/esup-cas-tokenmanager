@@ -2,6 +2,10 @@
   <servlet-name>cas</servlet-name>
   <url-pattern>/tokenManager</url-pattern>
 </servlet-mapping>
+<servlet-mapping>
+  <servlet-name>cas</servlet-name>
+  <url-pattern>/tokenManager/admin</url-pattern>
+</servlet-mapping>
 
 <jsp-config>
   <taglib>

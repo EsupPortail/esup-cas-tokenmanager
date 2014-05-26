@@ -31,6 +31,7 @@
 		<antcall target="cas-servlet-update" />
 		<antcall target="cas-login-webflow-update" />
 		<antcall target="cas-deployer-config-update" />
+		<antcall target="copy-static-files" />
 
 	</target>
 
@@ -92,14 +93,26 @@
 				withText="${longTermSessionAttrValue}"/>
 		</xmltask>
 
-		<echo message="Update ticketGrantingTicketGenerator.xml"/>
+		<echo message="Update ticketGrantingTicketCookieGenerator.xml"/>
 		<xmltask 
-			source="${cas.server.webapp.dir}/WEB-INF/spring-configuration/ticketGrantingTicketGenerator.xml"
-			dest="${cas.server.webapp.dir}/WEB-INF/spring-configuration/ticketGrantingTicketGenerator.xml">
+			source="${cas.server.webapp.dir}/WEB-INF/spring-configuration/ticketGrantingTicketCookieGenerator.xml"
+			dest="${cas.server.webapp.dir}/WEB-INF/spring-configuration/ticketGrantingTicketCookieGenerator.xml">
 			<replace 
-				path='//:bean[@id="ticketGrantingTicketCookieGenerator"]/@c:timeToKillInMilliSeconds'
+				path='//:bean[@id="ticketGrantingTicketCookieGenerator"]/@p:rememberMeMaxAge'
 				withText="${tgtTicketCookieGeneratorAttrValue}"/>
 		</xmltask>
+	</target>
+
+	<target name="copy-static-files" description="Copying static files">
+		
+		<copy todir="${cas.server.webapp.dir}/WEB-INF/view">
+			<fileset dir="${basedir}/src/main/webapp/WEB-INF/view"/>
+		</copy>
+
+		<copy todir="${cas.server.webapp.dir}/WEB-INF/jstl">
+			<fileset dir="${basedir}/src/main/webapp/WEB-INF/jstl"/>
+		</copy>
+
 	</target>
 
 </project>
