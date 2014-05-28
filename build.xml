@@ -49,6 +49,8 @@
 		<concat destfile="${cas.server.webapp.dir}/../resources/default_views.properties" append="true">
 			${viewPropertyClassKey}=${viewPropertyClassValue}
 			${viewPropertyUrlKey}=${viewPropertyUrlValue}
+			${viewPropertyClassAdminKey}=${viewPropertyClassValue}
+			${viewPropertyUrlAdminKey}=${viewPropertyUrlAdminValue}
 		</concat>
 
 	</target>

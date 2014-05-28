@@ -1,5 +1,8 @@
 # Created by http://www.gitignore.io
 
+.classpath
+.project
+
 ### Eclipse ###
 *.pydevproject
 .metadata

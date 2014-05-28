@@ -51,6 +51,7 @@ public class AdminRevocationController extends AbstractController {
 				model.put("user", targetUser);
 
 			} catch (UnsupportedOperationException e) {
+				e.printStackTrace();
 				model.put("error", true);
 			}
 		}

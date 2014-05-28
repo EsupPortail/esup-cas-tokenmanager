@@ -34,8 +34,6 @@ public class UserRevocationController extends AbstractController {
 
 		String authenticatedUser = "admin";
 
-		System.out.println(request.getRemoteUser());
-
 		ModelMap model = new ModelMap();
 
 		/**

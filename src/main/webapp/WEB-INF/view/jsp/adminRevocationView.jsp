@@ -26,20 +26,33 @@
 	<section class="container">
 
 		<c:if test="${not empty user}">
+			NOT EMPTY USER !!!
+			<br/>
+			${destroyedTicket}
 			<c:choose>
-				<c:when test="${destroyedTicket gt 0}">
+				<c:when test="${ticketDestroyed gt 0}">
 					<p class="bg-success">
-						You successfully deleted ${destroyedTicket} Ticket Granting Ticket(s) for user <strong>${user}</strong>.
+						You successfully deleted ${ticketDestroyed} Ticket Granting Ticket(s) for user <strong>${user}</strong>.
 						<br>
 						He does not have active sessions anymore.
 					</p>
 				</c:when>
-				<c:when test="${destroyedTicket eq 0}">
+				<c:when test="${ticketDestroyed eq 0}">
 					<p class="bg-warning">
 						You requested to delete all Ticket Granting Ticket for <strong>${user}</strong>, but he does not have any active session.
 					</p>
 				</c:when>
+				<c:otherwise>
+					Otherwise... DAFUCK !!!!
+				</c:otherwise>
 			</c:choose>
+		</c:if>
+		<c:if test="${error eq true}">
+			<p class="bg-error">
+				Oops, it seems we just got a problem to handle your request, please contact an administrator.
+				<br/>
+				Just kidding, you must be one of them if you are on this page ;-)
+			</p>
 		</c:if>
 		
 		<form action="./admin" method="post" role="form">
