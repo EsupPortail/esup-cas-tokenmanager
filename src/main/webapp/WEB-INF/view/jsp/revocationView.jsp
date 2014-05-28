@@ -24,10 +24,10 @@
 
 	<section class="container">
 		
-		<c:if test="${not empty destroyTicketMessage}">
+		<c:if test="${not empty ticketDestroyed}">
 			<p class="alert alert-success alert-dismissable">
-			  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-			  ${destroyTicketMessage}
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				Ticket has been successfully destroyed.
 			</p>
 		</c:if>
 

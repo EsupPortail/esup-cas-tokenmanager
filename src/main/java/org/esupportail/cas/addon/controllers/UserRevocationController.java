@@ -13,6 +13,7 @@ import org.jasig.cas.authentication.Authentication;
 import org.jasig.cas.ticket.Ticket;
 import org.jasig.cas.ticket.TicketGrantingTicket;
 import org.jasig.cas.ticket.registry.TicketRegistry;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
@@ -32,26 +33,22 @@ public class UserRevocationController extends AbstractController {
 	@Override
 	protected ModelAndView handleRequestInternal(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 
-		String authenticatedUser = "admin";
+		String currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 
 		ModelMap model = new ModelMap();
 
-		/**
-		 * Not secured at all
-		 * Just for prototyping purpose
-		 */
 		String ticketParam = request.getParameter("ticket");
-		if(ticketParam != null) {
+		if(ticketParam != null && ticketBelongToCurrentUser(ticketParam, currentUser)) {
 			this.centralAuthenticationService.destroyTicketGrantingTicket(ticketParam);
-			model.put("destroyTicketMessage", "Ticket : " + ticketParam + " successfully destroyed from the ticket registry");
+			model.put("ticketDestroyed", true);
 		}
 
-		Map<Authentication, Ticket> userTickets = this.listTicketForUser(authenticatedUser);
+		Map<Authentication, Ticket> userTickets = this.listTicketForUser(currentUser);
 
 		model.put("expirationPolicyInSeconds", this.expirationPolicyInSeconds);
 		model.put("rememberMeExpirationPolicyInSeconds", this.rememberMeExpirationPolicyInSeconds);
 		model.put("userTickets", userTickets);
-		model.put("authenticatedUser", authenticatedUser);
+		model.put("authenticatedUser", currentUser);
 
 		return new ModelAndView("revocationView", model);
 	}
@@ -86,6 +83,27 @@ public class UserRevocationController extends AbstractController {
 		}
 
 		return userTickets;
+	}
+
+	private boolean ticketBelongToCurrentUser(String ticketId, String currentUser) {
+		// Get all ST and TGT from the ticket registry
+		final Collection<Ticket> tickets = this.ticketRegistry.getTickets();
+
+		for (final Ticket ticket : tickets) {
+
+			//                Check if the ticket is a TGT and if it is not expired
+			if (ticket instanceof TicketGrantingTicket && ticket.getId().equalsIgnoreCase(ticketId)) {
+				TicketGrantingTicket tgt = (TicketGrantingTicket) ticket;
+				String ticketOwner = tgt.getAuthentication().getPrincipal().getId();
+
+				if(ticketOwner.equalsIgnoreCase(currentUser)) {
+					return true;
+				}
+
+			}
+		}
+
+		return false;
 	}
 
 	public void setCentralAuthenticationService(
