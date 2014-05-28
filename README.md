@@ -23,19 +23,30 @@ Add this folder into CAS project folder, and add this line to the main `pom.xml`
 </modules>
 ```
 
-#### Copy static files
+#### Add addon dependency to cas-server-webapp
 
-* `cas-addon-webapp-token-manager/src/main/java/webapp/WEB-INF/jstl` to `cas-server-webapp/src/main/java/webapp/WEB-INF/`
-* `cas-addon-webapp-token-manager/src/main/java/webapp/WEB-INF/view/jsp/revocation.jsp` to `cas-server-webapp/src/main/java/webapp/WEB-INF/view/jsp/`
+```xml
+<dependencies>
+	...
+    <dependency>
+      <groupId>org.esupportail.cas.addon</groupId>
+      <artifactId>cas-addon-token-manager-webapp</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+	...
+</dependencies>
 
 #### Run the build process
 
-```
-ant build
-```
+Simply go to `cas-addon-token-manager-webapp/` and run `ant build`, this will do the whole configuration setup int `cas-server-webapp`.
+
+__Warning:___ This will override your CAS Server initial configuration, please make sure to make a backup before running the build process.
 
 ## 2. Deployment 
 
 Package your app using maven and deploy `.war` to your favorite Tomcat server. 
 
-Token manager interface is accessible from : `http://YOU_SERVER:8080/tokenManager`
+You can now access :
+
+* User token manager : `/cas/tokenManager`
+* Admin token manager : `/cas/tokenManager/admin`
