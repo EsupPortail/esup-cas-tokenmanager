@@ -1,0 +1,4 @@
+  <sec:http pattern="/tokenManager/**" entry-point-ref="notAuthorizedEntryPoint" use-expressions="true" auto-config="true" xmlns:sec="http://www.springframework.org/schema/security">
+  	<sec:intercept-url pattern="/tokenManager" access="isAuthenticated()"/>
+  	<sec:intercept-url pattern="/tokenManager/admin" access="isFullyAuthenticated() and hasRole('ROLE_ADMIN')"/>
+  </sec:http>

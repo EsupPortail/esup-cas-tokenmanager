@@ -32,6 +32,8 @@
 		<antcall target="cas-login-webflow-update" />
 		<antcall target="cas-deployer-config-update" />
 		<antcall target="copy-static-files" />
+		<antcall target="security-config"/>
+		<antcall target="fix-empty-xmlns"/>
 
 	</target>
 
@@ -114,6 +116,42 @@
 		<copy todir="${cas.server.webapp.dir}/WEB-INF/jstl">
 			<fileset dir="${basedir}/src/main/webapp/WEB-INF/jstl"/>
 		</copy>
+
+	</target>
+
+	<target name="security-config" description="Add security configuration">
+		
+		<echo message="Update securityContext.xml"/>
+
+		<xmltask
+			source="${cas.server.webapp.dir}/WEB-INF/spring-configuration/securityContext.xml"
+			dest="${cas.server.webapp.dir}/WEB-INF/spring-configuration/securityContext.xml">
+			<insert path="//sec:http[last()]" position="after" file="${basedir}/src/main/webapp/WEB-INF/spring-configuration/securityContext-fragment.xml" />	
+		</xmltask>
+
+		<echo message="Update web.xml" />
+
+		<xmltask
+			source="${cas.server.webapp.dir}/WEB-INF/web.xml"
+			dest="${cas.server.webapp.dir}/WEB-INF/web.xml">
+			<insert path="//:filter-mapping[:filter-name/text()='springSecurityFilterChain'][last()]"
+					position="after" file="${basedir}/src/main/webapp/WEB-INF/web-security-fragment.xml" />
+		</xmltask>
+
+	</target>
+
+	<target name="fix-empty-xmlns" description="Remove empty XMLNS attribute added by xmltask">
+		
+		<echo message="Remove all empty xmlns attribute from configuration files" />
+
+		<replaceregexp byline="true">
+		  <regexp pattern='xmlns=""'/>
+		  <substitution expression=""/>
+		  <fileset dir="${cas.server.webapp.dir}/WEB-INF">
+		    <include name="*.xml"/>
+		    <include name="spring-configuration/*.xml"/>
+		  </fileset>
+		</replaceregexp>
 
 	</target>
 
