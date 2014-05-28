@@ -35,6 +35,7 @@ Add this folder into CAS project folder, and add this line to the main `pom.xml`
     </dependency>
 	...
 </dependencies>
+```
 
 #### Run the build process
 
