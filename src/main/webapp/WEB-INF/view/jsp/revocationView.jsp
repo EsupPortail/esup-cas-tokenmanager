@@ -101,7 +101,7 @@
 					</td>
 					<td>
 						<a href="./revocation.html?ticket=${ticket.id}" class="btn btn-danger">
-                        	Révoquer
+                        	Revoke
                         </a>
 					</td>
 				</tr>

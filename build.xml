@@ -44,6 +44,10 @@
 		<concat destfile="${cas.server.webapp.dir}/WEB-INF/cas.properties" append="true">
 			${tgt.timeToKillInSeconds}
 			${tgt.rememberMeTimeToKillInSeconds}
+			${security.loginUrl}
+			${security.service}
+			${security.role}
+			${security.url}
 		</concat>
 
 		<echo message="Update default_views.properties"/>
@@ -126,6 +130,7 @@
 		<xmltask
 			source="${cas.server.webapp.dir}/WEB-INF/spring-configuration/securityContext.xml"
 			dest="${cas.server.webapp.dir}/WEB-INF/spring-configuration/securityContext.xml">
+			<remove path="//sec:authentication-manager" />
 			<insert path="//sec:http[last()]" position="after" file="${basedir}/src/main/webapp/WEB-INF/spring-configuration/securityContext-fragment.xml" />	
 		</xmltask>
 

@@ -63,6 +63,22 @@
       <artifactId>uadetector-resources</artifactId>
       <version>2014.01</version>
     </dependency>
+        <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-cas</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jasig.cas.client</groupId>
+      <artifactId>cas-client-core</artifactId>
+      <version>3.2.1</version>
+      <exclusions>
+        <exclusion>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+      </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
   <properties>
     <cas.version>4.0.0</cas.version>

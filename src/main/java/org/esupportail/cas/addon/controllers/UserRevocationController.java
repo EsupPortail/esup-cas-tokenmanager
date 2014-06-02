@@ -14,11 +14,11 @@ import org.jasig.cas.ticket.Ticket;
 import org.jasig.cas.ticket.TicketGrantingTicket;
 import org.jasig.cas.ticket.registry.TicketRegistry;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UserRevocationController.
  */
@@ -54,7 +54,8 @@ public class UserRevocationController extends AbstractController {
 	@Override
 	protected ModelAndView handleRequestInternal(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 
-		String currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String currentUser = user.getUsername();
 
 		ModelMap model = new ModelMap();
 

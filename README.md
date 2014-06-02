@@ -11,7 +11,7 @@ _Warning : This is only a proof of concept, do not use in a production environme
 
 Add this folder into CAS project folder, and add this line to the main `pom.xml`
 
-### 1.2 Cas Token Manager configuration
+### Cas Token Manager configuration
 
 ####  Add project into main pom.xml
 
@@ -36,6 +36,14 @@ Add this folder into CAS project folder, and add this line to the main `pom.xml`
 	...
 </dependencies>
 ```
+
+Please update lines below in `securityContext-fragment.xml` otherwise you won't be able to connect to the admin interface.
+
+```xml
+  <sec:user-service id="userDetailsService">
+      <sec:user name="@CHANGE_THIS@" password="notused" authorities="ROLE_ADMIN" />
+  </sec:user-service>
+``
 
 #### Run the build process
 
