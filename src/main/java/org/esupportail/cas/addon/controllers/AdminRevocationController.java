@@ -14,16 +14,31 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
+/**
+ * The Class AdminRevocationController.
+ */
 public class AdminRevocationController extends AbstractController {
 
+	/** The central authentication service. */
 	@NotNull
 	private CentralAuthenticationService centralAuthenticationService;
+
+	/** The ticket registry. */
 	private final TicketRegistry ticketRegistry;
 
+	/**
+	 * Instantiates a new admin revocation controller.
+	 *
+	 * @param ticketRegistry the ticket registry
+	 */
 	public AdminRevocationController(final TicketRegistry ticketRegistry) {
 		this.ticketRegistry = ticketRegistry;
 	}
 
+	/**
+	 * Check if the user parameter exists,
+	 * if it does then it will destroyed all active session for the specified user
+	 */
 	@Override
 	protected ModelAndView handleRequestInternal(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 
@@ -58,6 +73,11 @@ public class AdminRevocationController extends AbstractController {
 		return new ModelAndView("adminRevocationView", model);
 	}
 
+	/**
+	 * Sets the central authentication service.
+	 *
+	 * @param centralAuthenticationService the new central authentication service
+	 */
 	public void setCentralAuthenticationService(
 			final CentralAuthenticationService centralAuthenticationService) {
 		this.centralAuthenticationService = centralAuthenticationService;

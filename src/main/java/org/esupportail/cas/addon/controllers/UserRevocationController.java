@@ -18,18 +18,39 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UserRevocationController.
+ */
 public class UserRevocationController extends AbstractController {
 
+	/** The central authentication service. */
 	@NotNull
 	private CentralAuthenticationService centralAuthenticationService;
+
+	/** The ticket registry. */
 	private final TicketRegistry ticketRegistry;
+
+	/** The Ticket Granting Ticket expiration policy in seconds. */
 	private int expirationPolicyInSeconds;
+
+	/** The Ticket Granting Ticket remember me expiration policy in seconds. */
 	private int rememberMeExpirationPolicyInSeconds;
 
+	/**
+	 * Instantiates a new user revocation controller.
+	 *
+	 * @param ticketRegistry the ticket registry
+	 */
 	public UserRevocationController(final TicketRegistry ticketRegistry) {
 		this.ticketRegistry = ticketRegistry;
 	}
 
+	/**
+	 * Request handler
+	 * This will list all the current session for the authenticated user
+	 * The user can also revoke a specific session
+	 */
 	@Override
 	protected ModelAndView handleRequestInternal(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 
@@ -53,6 +74,12 @@ public class UserRevocationController extends AbstractController {
 		return new ModelAndView("revocationView", model);
 	}
 
+	/**
+	 * List active Ticket Granting Ticket for the authenticated user.
+	 *
+	 * @param userId the user id
+	 * @return the map
+	 */
 	private Map<Authentication, Ticket> listTicketForUser(String userId) {
 
 		Map<Authentication, Ticket> userTickets = new HashMap<Authentication, Ticket>();
@@ -85,6 +112,13 @@ public class UserRevocationController extends AbstractController {
 		return userTickets;
 	}
 
+	/**
+	 * Check if the authenticated correspond to the Ticket's principal ID
+	 *
+	 * @param ticketId
+	 * @param currentUser
+	 * @return true, if the ticket belongs to the current user
+	 */
 	private boolean ticketBelongToCurrentUser(String ticketId, String currentUser) {
 		// Get all ST and TGT from the ticket registry
 		final Collection<Ticket> tickets = this.ticketRegistry.getTickets();
@@ -106,15 +140,30 @@ public class UserRevocationController extends AbstractController {
 		return false;
 	}
 
+	/**
+	 * Sets the central authentication service.
+	 *
+	 * @param centralAuthenticationService the new central authentication service
+	 */
 	public void setCentralAuthenticationService(
 			final CentralAuthenticationService centralAuthenticationService) {
 		this.centralAuthenticationService = centralAuthenticationService;
 	}
 
+	/**
+	 * Sets the expiration policy in seconds.
+	 *
+	 * @param expirationPolicyInSeconds the new expiration policy in seconds
+	 */
 	public void setExpirationPolicyInSeconds(final int expirationPolicyInSeconds) {
 		this.expirationPolicyInSeconds = expirationPolicyInSeconds;
 	}
 
+	/**
+	 * Sets the remember me expiration policy in seconds.
+	 *
+	 * @param rememberMeExpirationPolicyInSeconds the new remember me expiration policy in seconds
+	 */
 	public void setRememberMeExpirationPolicyInSeconds(final int rememberMeExpirationPolicyInSeconds) {
 		this.rememberMeExpirationPolicyInSeconds = rememberMeExpirationPolicyInSeconds;
 	}
