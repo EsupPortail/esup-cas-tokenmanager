@@ -1,4 +1,4 @@
-<project name="cas-addon-token-manager-webapp" basedir="." default="help">
+<project name="cas-addon-token-manager-webapp" basedir="." default="build">
 
 	<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask">
 		<classpath path="lib/xmltask.jar"/>
