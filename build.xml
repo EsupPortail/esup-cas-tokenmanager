@@ -79,15 +79,15 @@
 	<target name="cas-login-webflow-update" description="Update the login-webflow.xml file">
 		<echo message="Update login-webflow.xml"/>
 		<xmltask source="${cas.server.webapp.dir}/WEB-INF/login-webflow.xml" dest="${cas.server.webapp.dir}/WEB-INF/login-webflow.xml">
-			<insert path="//property[name='authenticationMetaDataPopulators']" position="after" xml="${cas.deployer.config.metadatapopulator.xml}"/>
+			<replace path='//:var[@name="credential"]/@class' withText="${cas.login.webflow.credential.xml}" />
+			<insert path="//:view-state[@id='viewLoginForm']//:binding[last()]" position="after" xml="${cas.login.webflow.bindings.xml}" />
 		</xmltask>
 	</target>
 
 	<target name="cas-deployer-config-update" description="Update the deployerConfigContext.xml file">
 		<echo message="Update deployerConfigContext.xml"/>
 		<xmltask source="${cas.server.webapp.dir}/WEB-INF/deployerConfigContext.xml" dest="${cas.server.webapp.dir}/WEB-INF/deployerConfigContext.xml">		
-			<replace path='//:var[@name="credential"]/@class' withText="${cas.login.webflow.credential.xml}" />
-			<insert path="//:view-state[@id='viewLoginForm']//:binding[last()]" position="after" xml="${cas.login.webflow.bindings.xml}" />
+			<insert path="//property[name='authenticationMetaDataPopulators']" position="after" xml="${cas.deployer.config.metadatapopulator.xml}"/>
 		</xmltask>	
 	</target>
 
@@ -131,7 +131,8 @@
 			source="${cas.server.webapp.dir}/WEB-INF/spring-configuration/securityContext.xml"
 			dest="${cas.server.webapp.dir}/WEB-INF/spring-configuration/securityContext.xml">
 			<remove path="//sec:authentication-manager" />
-			<insert path="//sec:http[last()]" position="after" file="${basedir}/src/main/webapp/WEB-INF/spring-configuration/securityContext-fragment.xml" />	
+			<insert path="//sec:http[last()]" position="after" file="${basedir}/src/main/webapp/WEB-INF/spring-configuration/securityContext-fragment.xml" />
+			<insert path="/:beans" position="under" file="${basedir}/src/main/webapp/WEB-INF/spring-configuration/securityContext-bean-fragment.xml" />
 		</xmltask>
 
 		<echo message="Update web.xml" />
