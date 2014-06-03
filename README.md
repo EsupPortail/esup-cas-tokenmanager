@@ -43,7 +43,14 @@ Please update lines below in `securityContext-fragment.xml` otherwise you won't 
   <sec:user-service id="userDetailsService">
       <sec:user name="@CHANGE_THIS@" password="notused" authorities="ROLE_ADMIN" />
   </sec:user-service>
-``
+```
+
+If you want to use the full potential of this addon you should consider adding these two lines in the `casLoginView.jsp` page.
+
+```html
+<input type="hidden" name="ipAddress" value="${pageContext.request.remoteAddr}"/>
+<input type="hidden" name="userAgent" value="${header['user-agent']}" />
+```
 
 #### Run the build process
 
