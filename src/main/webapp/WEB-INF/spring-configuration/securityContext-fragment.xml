@@ -10,5 +10,5 @@
   </sec:authentication-manager>
 
   <sec:user-service id="userDetailsService" xmlns:sec="http://www.springframework.org/schema/security">
-      <sec:user name="@CHANGE_THIS@" password="notused" authorities="ROLE_ADMIN" />
+      <sec:user name="${cas.securityContext.serviceProperties.adminUser}" password="notused" authorities="${cas.securityContext.serviceProperties.adminRoles}" />
   </sec:user-service>

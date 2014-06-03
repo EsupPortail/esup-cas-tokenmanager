@@ -37,13 +37,9 @@ Add this folder into CAS project folder, and add this line to the main `pom.xml`
 </dependencies>
 ```
 
-Please update lines below in `securityContext-fragment.xml` otherwise you won't be able to connect to the admin interface.
+In a production environment you should update the `userDetailsService` bean in `securityContext.xml` with something that checks your user storage.
 
-```xml
-  <sec:user-service id="userDetailsService">
-      <sec:user name="@CHANGE_THIS@" password="notused" authorities="ROLE_ADMIN" />
-  </sec:user-service>
-```
+---------------------------------------
 
 If you want to use the full potential of this addon you should consider adding these two lines in the `casLoginView.jsp` page.
 

@@ -48,6 +48,7 @@
 			${security.service}
 			${security.role}
 			${security.url}
+			${security.admin}
 		</concat>
 
 		<echo message="Update default_views.properties"/>
