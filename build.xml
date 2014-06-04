@@ -88,7 +88,7 @@
 	<target name="cas-deployer-config-update" description="Update the deployerConfigContext.xml file">
 		<echo message="Update deployerConfigContext.xml"/>
 		<xmltask source="${cas.server.webapp.dir}/WEB-INF/deployerConfigContext.xml" dest="${cas.server.webapp.dir}/WEB-INF/deployerConfigContext.xml">		
-			<insert path="//property[name='authenticationMetaDataPopulators']" position="after" xml="${cas.deployer.config.metadatapopulator.xml}"/>
+			<insert path='//:property[@name="authenticationMetaDataPopulators"]//:bean[last()]' position="after" xml="${cas.deployer.config.metadatapopulator.xml}"/>
 		</xmltask>	
 	</target>
 
