@@ -9,7 +9,7 @@ V2 version is coming...
 
 ### Cas Token Manager configuration
 
-Documentation is accessible there : `http://www.esup-portail.org/display/ESPADHERENT/Addon+%3A+Gestionnaire+de+token` (This is still a work in progress documentation, but as soon as it's finished it will be open to everyone).
+Documentation is accessible there : [Esup Portail Documentation](http://www.esup-portail.org/display/ESPADHERENT/Addon+%3A+Gestionnaire+de+token) (This is still a work in progress documentation, but as soon as it's finished it will be open to everyone).
 
 ### Warning
 
@@ -17,7 +17,7 @@ Do not forget to configure your proxy settings, if you are using a Tomcat server
 
 ```
 JAVA_OPTS="... -Dhttp.proxyHost=cache.example.org -Dhttp.proxyPort=3128"
-``
+```
 
 You can now access :
 
