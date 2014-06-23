@@ -5,58 +5,19 @@ The plugin aim to be compatible with CAS _4.0.0+_
 
 _Warning : This is only a proof of concept, do not use in a production environment_
 
-## 1. Configuration
-
-[Activate CAS Remember Me](https://jasig.github.io/cas/4.0.0/installation/Configuring-Authentication-Components.html#long-term-authentication)
-
-Add this folder into CAS project folder, and add this line to the main `pom.xml`
+V2 version is coming...
 
 ### Cas Token Manager configuration
 
-####  Add project into main pom.xml
+Documentation is accessible there : `http://www.esup-portail.org/display/ESPADHERENT/Addon+%3A+Gestionnaire+de+token` (This is still a work in progress documentation, but as soon as it's finished it will be open to everyone).
 
-```xml
-<modules>
-  ...
-  <module>cas-addon-webapp-token-manager</module>
-  ...
-</modules>
+### Warning
+
+Do not forget to configure your proxy settings, if you are using a Tomcat server, edit `bin/setenv.sh`
+
 ```
-
-#### Add addon dependency to cas-server-webapp
-
-```xml
-<dependencies>
-	...
-    <dependency>
-      <groupId>org.esupportail.cas.addon</groupId>
-      <artifactId>cas-addon-token-manager-webapp</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-	...
-</dependencies>
-```
-
-In a production environment you should update the `userDetailsService` bean in `securityContext.xml` with something that checks your user storage.
-
----------------------------------------
-
-If you want to use the full potential of this addon you should consider adding these two lines in the `casLoginView.jsp` page.
-
-```html
-<input type="hidden" name="ipAddress" value="${pageContext.request.remoteAddr}"/>
-<input type="hidden" name="userAgent" value="${header['user-agent']}" />
-```
-
-#### Run the build process
-
-Simply go to `cas-addon-token-manager-webapp/` and run `ant build`, this will do the whole configuration setup int `cas-server-webapp`.
-
-__Warning:___ This will override your CAS Server initial configuration, please make sure to make a backup before running the build process.
-
-## 2. Deployment 
-
-Package your app using maven and deploy `.war` to your favorite Tomcat server. 
+JAVA_OPTS="... -Dhttp.proxyHost=cache.example.org -Dhttp.proxyPort=3128"
+``
 
 You can now access :
 

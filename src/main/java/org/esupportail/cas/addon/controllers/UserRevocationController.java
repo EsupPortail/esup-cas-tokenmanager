@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
+import org.springframework.security.ldap.userdetails.LdapUserDetailsImpl;
 
 /**
  * The Class UserRevocationController.
@@ -54,8 +55,8 @@ public class UserRevocationController extends AbstractController {
 	@Override
 	protected ModelAndView handleRequestInternal(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 
-		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String currentUser = user.getUsername();
+		LdapUserDetailsImpl user = (LdapUserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                String currentUser = user.getUsername();
 
 		ModelMap model = new ModelMap();
 

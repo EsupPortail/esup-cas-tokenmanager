@@ -1,4 +1,0 @@
-  <filter-mapping>
-    <filter-name>springSecurityFilterChain</filter-name>
-    <url-pattern>/tokenManager/*</url-pattern>
-  </filter-mapping>
