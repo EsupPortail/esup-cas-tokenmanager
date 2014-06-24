@@ -15,13 +15,6 @@
 	<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-
-	<header class="container"> 
-
-		<h1>Ticket Granting Ticket revocation interface</h1>
-		
-	</header>
-
 	<section class="container">
 		
 		<c:if test="${not empty ticketDestroyed}">
@@ -111,14 +104,6 @@
 		</c:if>
 
 	</section>
-	
-	<footer class="container">
-		
-		<hr>
-		<p>Cas webapp admin - Université de La Rochelle</p>
-
-	</footer>
-
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
