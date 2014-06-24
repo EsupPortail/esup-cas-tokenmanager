@@ -60,7 +60,7 @@ public class UserRevocationController extends AbstractController {
 
 		ModelMap model = new ModelMap();
 
-		String ticketParam = request.getParameter("ticket");
+		String ticketParam = request.getParameter("ticketId");
 		if(ticketParam != null && ticketBelongToCurrentUser(ticketParam, currentUser)) {
 			this.centralAuthenticationService.destroyTicketGrantingTicket(ticketParam);
 			model.put("ticketDestroyed", true);
@@ -131,7 +131,6 @@ public class UserRevocationController extends AbstractController {
 			if (ticket instanceof TicketGrantingTicket && ticket.getId().equalsIgnoreCase(ticketId)) {
 				TicketGrantingTicket tgt = (TicketGrantingTicket) ticket;
 				String ticketOwner = tgt.getAuthentication().getPrincipal().getId();
-
 				if(ticketOwner.equalsIgnoreCase(currentUser)) {
 					return true;
 				}

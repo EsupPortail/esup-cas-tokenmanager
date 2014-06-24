@@ -100,7 +100,7 @@
 						<cas:ipLocator ipAddress="${authentication.attributes.ipAddress}"/>
 					</td>
 					<td>
-						<a href="./revocation.html?ticket=${ticket.id}" class="btn btn-danger">
+						<a href="./tokenManager?ticketId=${ticket.id}" class="btn btn-danger">
                         	Revoke
                         </a>
 					</td>
