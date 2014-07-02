@@ -1,0 +1,135 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.esupportail.cas.addon</groupId>
+	<artifactId>cas-ticket-management-webapp</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>cas-ticket-management-webapp</name>
+	<url>http://maven.apache.org</url>
+
+	<dependencies>
+		<!-- Spring 3 dependencies -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- Spring Security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-cas</artifactId>
+			<version>${spring.security.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-ldap</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jasig.cas.client</groupId>
+			<artifactId>cas-client-core</artifactId>
+			<version>3.2.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- Rest client dependencies -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.9</version>
+		</dependency>
+
+		<!-- Views dependencies -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+			<type>jar</type>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+			<type>jar</type>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.uadetector</groupId>
+			<artifactId>uadetector-resources</artifactId>
+			<version>2014.04</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20090211</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<warName>cas-ticket-management</warName>
+					<webResources>
+						<resource>
+							<directory>${basedir}/src/main/webapp/WEB-INF</directory>
+							<filtering>true</filtering>
+							<targetPath>WEB-INF</targetPath>
+							<includes>
+								<include>**/web.xml</include>
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>3.2.8.RELEASE</spring.version>
+		<spring.security.version>3.2.3.RELEASE</spring.security.version>
+	</properties>
+</project>

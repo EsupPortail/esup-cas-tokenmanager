@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd">
+
+ 	<context:annotation-config />
+	<context:component-scan base-package="org.esupportail.cas.addon.controller" />
+		
+ 	<!-- Prevent spring to truncate PathVariable 
+ 		 See : http://docs.spring.io/spring/docs/3.0.5.RELEASE/javadoc-api/org/springframework/web/servlet/mvc/annotation/DefaultAnnotationHandlerMapping.html#setUseDefaultSuffixPattern(boolean)
+ 	-->
+ 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="useDefaultSuffixPattern" value="false" />
+	</bean>
+ 
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/jsp/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+	
+	<util:list id="messageConvertersList">
+		<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+	</util:list>
+	
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+		<property name="messageConverters" ref="messageConvertersList"/>
+	</bean>
+	
+   	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="${lang.default}" />
+	</bean>
+ 
+	<bean id="localeChangeInterceptor"
+		class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+		<property name="paramName" value="language" />
+	</bean>
+ 
+	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" >
+		<property name="interceptors">
+		   <list>
+			<ref bean="localeChangeInterceptor" />
+		   </list>
+		</property>
+	</bean>
+        
+	<!-- | Message source for this context, loaded from localized "messages_xx" 
+		files + -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>messages</value>
+			</list>
+		</property>
+	</bean>
+   	
+   	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<util:list>
+				<value>/WEB-INF/config.properties</value>
+			</util:list>
+		</property>
+	</bean>
+	
+	<import resource="spring-security.xml" />
+	
+</beans>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:p="http://www.springframework.org/schema/p" 
+	   xmlns:sec="http://www.springframework.org/schema/security" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   					   http://www.springframework.org/schema/beans/spring-beans.xsd        
+	   					   http://www.springframework.org/schema/security 
+	   					   http://www.springframework.org/schema/security/spring-security.xsd
+	   					   http://www.springframework.org/schema/util
+        				   http://www.springframework.org/schema/util/spring-util.xsd">
+ 
+	
+	<sec:http auto-config="true" entry-point-ref="casProcessingFilterEntryPoint" pattern="/**" use-expressions="true">
+	    
+	    <sec:custom-filter after="CAS_FILTER" ref="casFilter"/>
+	    
+	    <sec:intercept-url access="permitAll" pattern="/"/>
+	    <sec:intercept-url access="permitAll" pattern="/authorizationFailure"/>
+	   
+	    <sec:intercept-url access="isAuthenticated()" pattern="/user"/>
+	    <sec:intercept-url access="isAuthenticated() and hasRole('${security.adminRole}')" pattern="/admin"/>
+	</sec:http>
+	
+	<bean id="notAuthorizedEntryPoint"
+		  class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint"/>
+  	
+	<bean id="ldapContextSource" class="org.springframework.security.ldap.DefaultSpringSecurityContextSource">
+        <constructor-arg value="${ldap.url}:${ldap.port}/${ldap.authn.baseDn}" />
+    </bean>
+    
+  	<bean id="serviceProperties" p:sendRenew="false" 
+  		  p:service="${security.service.url}"
+  		  class="org.springframework.security.cas.ServiceProperties" />
+
+		<bean id="authUserDetailsService"
+	      class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
+		<property name="userDetailsService" ref="ldapUserDetailsService" />
+	</bean>
+	
+	<bean id="ldapUserDetailsService"
+	      class="org.springframework.security.ldap.userdetails.LdapUserDetailsService">
+		<constructor-arg>
+			<bean class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
+				<constructor-arg index="0" value="${ldap.baseSearch}"/>
+				<constructor-arg index="1" value="${ldap.pattern.uid}"/>
+				<constructor-arg index="2" ref="ldapContextSource" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<bean id="ldapAuthoritiesPopulator"
+				  class="org.springframework.security.ldap.userdetails.DefaultLdapAuthoritiesPopulator">
+				<constructor-arg ref="ldapContextSource"/>
+				<constructor-arg value="${security.ldap.groups.baseDn}"/>
+				<property name="groupRoleAttribute" value="${security.ldap.groups.nameAttribute}"/>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+   <bean class="org.springframework.security.cas.authentication.CasAuthenticationProvider" 
+	     id="casAuthenticationProvider" 
+	     p:key="${cas.provider.key}" 
+	     p:serviceProperties-ref="serviceProperties" >
+	    <property name="authenticationUserDetailsService" ref="authUserDetailsService" />    
+	    <property name="ticketValidator">
+	    	<bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
+	       		<constructor-arg index="0" value="${server.prefix}"/>
+	     	</bean>
+	    </property>
+	</bean>
+    	
+	<sec:authentication-manager alias="casAuthenticationManager">
+		<sec:authentication-provider ref="casAuthenticationProvider"/>
+	</sec:authentication-manager>
+
+	<bean id="casFilter"
+		  p:filterProcessesUrl="/${security.service.check}"
+		  p:authenticationManager-ref="casAuthenticationManager"
+		  class="org.springframework.security.cas.web.CasAuthenticationFilter"> 
+	  
+		<property name="authenticationSuccessHandler">
+	    	<bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler" 
+	    		  p:alwaysUseDefaultTargetUrl="false" 
+	    		  p:defaultTargetUrl="/"/>
+	  	</property>
+	  	<property name="authenticationFailureHandler">
+	    	<bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+	      		<constructor-arg index="0" value="/"/>
+	    	</bean>
+	  	</property>
+	</bean>
+	
+	<bean id="casProcessingFilterEntryPoint" 
+		  p:loginUrl="${server.loginUrl}" 
+		  p:serviceProperties-ref="serviceProperties" 
+		  class="org.springframework.security.cas.web.CasAuthenticationEntryPoint"/>
+
+</beans>
