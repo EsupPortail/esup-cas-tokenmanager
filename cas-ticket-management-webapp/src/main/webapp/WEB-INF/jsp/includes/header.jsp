@@ -11,7 +11,9 @@
 <html lang="fr_FR">
 <head>
 	<meta charset="UTF-8">
-	<title>${pageTitle}</title>
+	<title>
+		<spring:message code="${pageTitle}"/>
+	</title>
 	<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>

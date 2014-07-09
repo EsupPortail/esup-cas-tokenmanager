@@ -1,20 +1,18 @@
 <jsp:directive.include file="includes/header.jsp" />
 
-	<h1>
-		<spring:message code="header.title"/>
-	</h1>
+	<h1>CAS addon ticket management webapp</h1>
 	
 	<ul>
 		<li>
 			<c:url value="/user" var="userIndex"/>
 			<a href="${userIndex}">
-				<spring:message code="index.user.link"/>
+				Interface de révocation utilisateur
 			</a>
 		</li>
 		<li>
 			<c:url value="/admin" var="adminIndex"/>
 			<a href="${adminIndex}">
-				<spring:message code="index.admin.link"/>
+				Interface de révocation administrateur
 			</a>
 		</li>
 	</ul>

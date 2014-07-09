@@ -27,6 +27,7 @@ public class AdminInterfaceController {
 
 		model.addAttribute("command", new TicketOwner());
 		model.addAttribute("delete", delete);
+		model.addAttribute("pageTitle", "admin.title");
 		return "adminIndex";
 	}
 

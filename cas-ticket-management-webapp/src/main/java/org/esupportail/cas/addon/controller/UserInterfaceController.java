@@ -43,6 +43,7 @@ public class UserInterfaceController {
 		model.addAttribute("expirationPolicyInSeconds", this.EXPIRATION_POLICY);
 		model.addAttribute("rememberMeExpirationPolicyInSeconds", this.REMEMBER_ME_EXPIRATION_POLICY);
 		model.addAttribute("userTickets", resultList);
+		model.addAttribute("pageTitle", "user.title");
 		return "userIndex";
 	}
 

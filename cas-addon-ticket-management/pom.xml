@@ -62,19 +62,7 @@
       <version>2.2.0</version>
     </dependency>
 
-    <dependency>
-      <groupId>com.thetransactioncompany</groupId>
-      <artifactId>java-property-utils</artifactId>
-      <version>1.9.1</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.thetransactioncompany</groupId>
-      <artifactId>cors-filter</artifactId>
-      <version>2.1</version>
-    </dependency>
   </dependencies>
-  
   <properties>
     <cas.version>4.0.0</cas.version>
     <spring.version>3.2.0.RELEASE</spring.version>

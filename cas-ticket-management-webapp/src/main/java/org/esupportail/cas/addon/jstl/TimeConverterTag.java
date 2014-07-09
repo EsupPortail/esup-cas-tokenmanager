@@ -42,13 +42,13 @@ public class TimeConverterTag extends TagSupport {
 			JspWriter out = this.pageContext.getOut();
 
 			if (numberOfDay > 0) {
-				out.print(numberOfDay + " day" + pluralAppender(numberOfDay) + " ago");
+				out.print(numberOfDay + " " + pluralize("day", numberOfDay) + " ago");
 				return SKIP_BODY;
 			} else if (numberOfHour > 0) {
-				out.print(numberOfHour + " hour" + pluralAppender(numberOfHour) + " ago");
+				out.print(numberOfHour + " " + pluralize("hour", numberOfHour) + " ago");
 				return SKIP_BODY;
 			} else if (numberOfMin > 1) {
-				out.print(numberOfMin + " minute" + pluralAppender(numberOfMin) + " ago");
+				out.print(numberOfMin + " " + pluralize("minute", numberOfMin) + " ago");
 				return SKIP_BODY;
 			} else {
 				out.print("Now");
@@ -79,13 +79,18 @@ public class TimeConverterTag extends TagSupport {
 	}
 
 	/**
-	 * If n bigger than 1 then append a 's' to the string.
+	 * Appends a `s` to the given word If `n` matches the pluralize rule
 	 *
+	 * @param word the word
 	 * @param n the n
-	 * @return the char
+	 * @return the string
 	 */
-	private static char pluralAppender(int n) {
-		return n > 1 ? 's' : ' ';
+	private static String pluralize(String word, int n) {
+		word = word.trim();
+		if((n == 0 || n > 1) && word.length != 0) {
+			word += "s";
+		}
+		return word;
 	}
 
 }
