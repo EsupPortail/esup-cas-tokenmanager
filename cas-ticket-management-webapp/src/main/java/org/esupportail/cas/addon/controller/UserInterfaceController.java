@@ -1,7 +1,6 @@
 package org.esupportail.cas.addon.controller;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.esupportail.cas.addon.model.JsonTicket;
 import org.esupportail.cas.addon.model.TicketOwner;
@@ -30,19 +29,47 @@ public class UserInterfaceController {
 	@Value("${cas.ticket.rememberMeExpirationPolicy}")
 	private long REMEMBER_ME_EXPIRATION_POLICY;
 
+	@Value("${ip.geolocation}")
+	private boolean ACTIVATE_IP_GEOLOCATION;
+
+	@Value("${ticket.nbToDisplay.perPage}")
+	private int nbToDisplay;
+
 	@Autowired
 	private RestTemplate restTemplate;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String printIndex(ModelMap model, @RequestParam(value = "delete", required = false) boolean delete) {
+	public String printIndex(ModelMap model, @RequestParam(value = "delete", required = false) boolean delete,
+			@RequestParam(value = "page", required = false) Integer page) {
 
-		List<JsonTicket> resultList = Arrays.asList(
-				this.restTemplate.getForObject(this.CAS_REST_API + "/{user}/", JsonTicket[].class, this.getCurrentUser()));
+		JsonTicket[] listTicket = this.restTemplate.getForObject(this.CAS_REST_API + "/{user}/", JsonTicket[].class, this.getCurrentUser());
+
+		int pageNumber = (int) Math.floor( listTicket.length / this.nbToDisplay );
+		if(page == null || page == 0) {
+			page = 0;
+		} else {
+			page--;
+		}
+
+		int startPoint = page * this.nbToDisplay;
+		int endPoint = startPoint + this.nbToDisplay;
+
+		// Just some calculation to make sure we won't get ArrayOutOfBoundException
+		if(startPoint > listTicket.length) {
+			page = pageNumber--;
+			startPoint = page * this.nbToDisplay;
+		}
+		endPoint = endPoint < listTicket.length ? endPoint : listTicket.length;
+
+		JsonTicket[] returnedTicket = Arrays.copyOfRange(listTicket, startPoint, endPoint);
 
 		model.addAttribute("delete", delete);
+		model.addAttribute("pageNumber", pageNumber);
+		model.addAttribute("currentPage", page);
 		model.addAttribute("expirationPolicyInSeconds", this.EXPIRATION_POLICY);
 		model.addAttribute("rememberMeExpirationPolicyInSeconds", this.REMEMBER_ME_EXPIRATION_POLICY);
-		model.addAttribute("userTickets", resultList);
+		model.addAttribute("activateIpGeolocation", this.ACTIVATE_IP_GEOLOCATION);
+		model.addAttribute("userTickets", returnedTicket);
 		model.addAttribute("pageTitle", "user.title");
 		return "userIndex";
 	}

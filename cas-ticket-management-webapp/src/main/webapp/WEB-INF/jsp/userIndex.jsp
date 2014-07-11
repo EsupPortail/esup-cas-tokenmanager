@@ -122,6 +122,24 @@
 				</tbody>
 			</table>
 		
+			<ul class="pagination">
+				<c:forEach var="i" begin="1" end="${pageNumber + 1}">
+					<c:url value="/user" var="paginatorUrl">
+						<c:param name="page" value="${i}"/>
+					</c:url>
+					<c:choose>
+						<c:when test="${i==(currentPage+1)}">
+							<c:set var="activeClass" value="class=\"active\""/>
+						</c:when>
+						<c:otherwise>
+							<c:set var="activeClass" value=""/>
+						</c:otherwise>
+					</c:choose>
+					<li ${activeClass}>
+						<a href="${paginatorUrl}">${i}</a>
+					</li>
+				</c:forEach>
+			</ul>
 		</c:otherwise>
 	</c:choose>
 
