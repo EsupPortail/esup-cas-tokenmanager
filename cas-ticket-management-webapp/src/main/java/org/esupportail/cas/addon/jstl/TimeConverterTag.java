@@ -87,7 +87,7 @@ public class TimeConverterTag extends TagSupport {
 	 */
 	private static String pluralize(String word, int n) {
 		word = word.trim();
-		if((n == 0 || n > 1) && word.length != 0) {
+		if((n == 0 || n > 1) && word.length() != 0) {
 			word += "s";
 		}
 		return word;

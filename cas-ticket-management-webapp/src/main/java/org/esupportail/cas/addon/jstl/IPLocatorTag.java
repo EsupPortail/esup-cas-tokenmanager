@@ -1,17 +1,14 @@
 package org.esupportail.cas.addon.jstl;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import org.json.JSONObject;
+import org.esupportail.cas.addon.model.IPInformation;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * The Class IPLocatorTag.
@@ -24,8 +21,10 @@ public class IPLocatorTag extends TagSupport {
 	/** The ip address. */
 	private String ipAddress;
 
+	private final String API_GEOIP_URL = "http://freegeoip.net/json/{ipAddress}";
+
 	/**
-	 * This tag will geocode the given IP address based on http://freegeoip.net REST API
+	 * This tag will geocode the given IP address based on the REST API
 	 * If the given IP address does not match anything then the tag will print the IP address
 	 */
 	@Override
@@ -34,32 +33,31 @@ public class IPLocatorTag extends TagSupport {
 		JspWriter out = this.pageContext.getOut();
 
 		try {
-			URL url = new URL("http://freegeoip.net/json/" + this.ipAddress);
-			HttpURLConnection con = this.sendGETRequest(url);
-			// Handle the response
-			String response = responseReader(con.getInputStream());
 
-			response = response.replaceAll("\"", "\\\"");
+			IPInformation ipInfo = this.getIPInformation(this.ipAddress);
 
-			JSONObject responseJson = new JSONObject(response);
-
-			if(responseJson.isNull("city")) {
-				out.print("Unknown");
-			} else if (responseJson.getString("country_code").equals("RD")) {
+			// FreeGeoIP returns RD if IP address is private (ex : 127.0.0.1, 192.168.1.1, ...)
+			if(ipInfo.getCountryCode().equalsIgnoreCase("RD")) {
 				out.print(this.ipAddress);
 			} else {
-				out.print(responseJson.getString("city") + ", " + responseJson.getString("country_code"));
+				String location = ipInfo.getCity() + ", " + ipInfo.getCountryCode();
+				out.print(location);
 			}
-
 		} catch (Exception e) {
+			// Catch user's network issue
 			try {
+				e.printStackTrace();
 				out.print("Unknown");
 			} catch (IOException ex1) { }
-			return SKIP_BODY;
 		}
-
-
 		return SKIP_BODY;
+	}
+
+	@Cacheable("ip_cache")
+	private IPInformation getIPInformation(String ipAddress) {
+		RestTemplate restTemplate = new RestTemplate();
+		IPInformation ipInfo = restTemplate.getForObject(this.API_GEOIP_URL, IPInformation.class, ipAddress);
+		return ipInfo;
 	}
 
 	/**
@@ -78,41 +76,6 @@ public class IPLocatorTag extends TagSupport {
 	 */
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
-	}
-
-	/**
-	 * Send get request.
-	 *
-	 * @param url the url
-	 * @return the http url connection
-	 * @throws Exception the exception
-	 */
-	private HttpURLConnection sendGETRequest(URL url) throws Exception {
-		HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		con.setRequestMethod("GET");
-		con.setRequestProperty("User-Agent", "Mozilla/5.0");
-		return con;
-	}
-
-	/**
-	 * Response reader.
-	 *
-	 * @param inputStream the input stream
-	 * @return the string
-	 * @throws Exception the exception
-	 */
-	private String responseReader(InputStream inputStream) throws Exception {
-
-		BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
-
-		String inputLine;
-		StringBuilder response = new StringBuilder();
-
-		while((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
-		return response.toString();
 	}
 
 }

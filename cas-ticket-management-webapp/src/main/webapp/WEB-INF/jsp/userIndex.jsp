@@ -106,7 +106,9 @@
 							<fmt:formatDate value="${expirationDate}" type="date"/>
 						</td>
 						<td>
-							<cas:ipLocator ipAddress="${ticket.authenticationAttributes.ipAddress}"/>
+							<c:if test="${activateIpGeolocation}">
+								<cas:ipLocator ipAddress="${ticket.authenticationAttributes.ipAddress}"/>
+							</c:if>
 							( <cas:timeConverter time="${ticket.lastTimeUsed}"/> )
 						</td>
 						<td>
